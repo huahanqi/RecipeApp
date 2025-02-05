@@ -1,5 +1,5 @@
 # RecipeApp
 
-This is an android app using JetPack Compose that allows you to search food and meals Recipe. 
+This is an Android app using Kotlin and Jetpack Compose framework. This Recipe App allows you to search various foods and meals Recipes. 
 
 Data from the MealDB: https://www.themealdb.com/api.php
