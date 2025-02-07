@@ -44,7 +44,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun SearchFood() {
+fun SearchFood(onNavigateToMealDetails: (Meal) -> Unit) {
     val viewModel: MealViewModel = viewModel()
     val mealState by viewModel.mealState.collectAsState()
     var searchText by remember { mutableStateOf("") }
@@ -129,7 +129,7 @@ fun SearchFood() {
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     items(mealState.relatedMeals) { meal ->
-                        MealResultItem(meal)
+                        MealResultItem(meal, onNavigateToMealDetails)
                     }
                 }
             }
@@ -141,7 +141,11 @@ fun SearchFood() {
 }
 
 @Composable
-fun SearchFoodWithTopBar(onClickFirstMenuItem: () -> Unit, onClickSecondMenuItem: () -> Unit = {}) {
+fun SearchFoodWithTopBar(
+    onClickFirstMenuItem: () -> Unit,
+    onClickSecondMenuItem: () -> Unit = {},
+    onNavigateToMealDetails: (Meal) -> Unit
+) {
     Scaffold(
         topBar = {
             MyTopAppBar(
@@ -153,16 +157,17 @@ fun SearchFoodWithTopBar(onClickFirstMenuItem: () -> Unit, onClickSecondMenuItem
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            SearchFood()
+            SearchFood(onNavigateToMealDetails)
         }
     }
 }
 
 @Composable
-fun MealResultItem(meal: Meal) {
+fun MealResultItem(meal: Meal, onNavigateToMealDetails: (Meal) -> Unit) {
     Column(
         modifier = Modifier
             .padding(8.dp)
+            .clickable{onNavigateToMealDetails(meal)}
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)

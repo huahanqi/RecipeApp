@@ -49,8 +49,23 @@ fun RecipeAppView(modifier: Modifier = Modifier) {
         composable(Screen.Search.route){
             SearchFoodWithTopBar(
                 onClickFirstMenuItem = onClickFirstMenuItem,
-                onClickSecondMenuItem = onClickSecondMenuItem
+                onClickSecondMenuItem = onClickSecondMenuItem,
+                onNavigateToMealDetails = {meal -> navController.navigate(Screen.SearchDetails.createRoute(meal))}
             )
+        }
+
+        composable(
+            Screen.SearchDetails.route,
+            arguments = listOf(navArgument("meal") {type = NavType.StringType})
+        ) { backStackEntry ->
+            val mealJson = backStackEntry.arguments?.getString("meal")
+//                val category = categoryJson?.let { gson.fromJson(it, Category::class.java) }
+            val meal = mealJson?.let {
+                Uri.decode(it).let { decodedJson ->
+                    gson.fromJson(decodedJson, Meal::class.java)
+                }
+            }
+            meal?.let { MealDetails(it, navController) }
         }
     }
 }

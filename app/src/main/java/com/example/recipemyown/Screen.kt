@@ -12,4 +12,10 @@ sealed class Screen(val route: String) {
         }
     }
     object Search : Screen("search")
+    object SearchDetails: Screen("searchDetails/{meal}") {
+        fun createRoute(meal: Meal): String {
+            val mealJson = Uri.encode(Gson().toJson(meal))
+            return "searchDetails/$mealJson"
+        }
+    }
 }
